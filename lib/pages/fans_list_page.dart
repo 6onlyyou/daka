@@ -18,10 +18,10 @@ class _FansListState extends State<FansListPage> {
   void initState() {
     super.initState();
     // 获取商品数据
+    print('商品1');
     getFans();
   }
 
-  // 获取商品数据
   void getFans() async {
     // 请求url
     var url = 'http://www.konkonyu.com/appservice/wechat/qrcode/getFansList';
@@ -120,37 +120,37 @@ class _FansListState extends State<FansListPage> {
       width: 200,
       child: Row(
         children: <Widget>[
-            Container(
-              padding: EdgeInsets.only(left: 7.0, right: 7.0),
-              height: 18,
-              decoration: BoxDecoration(
-                color: Color.fromRGBO(196,236,255, 1.0),
-                borderRadius: BorderRadius.all(Radius.circular(5.0)),
-              ),
-              child: Center(
-                child: Text(
-                  '${newList[index].typeSignCount[0].typeName}元打卡:${newList[index].typeSignCount[0].typeSignCount==null? 0 : newList[index].typeSignCount[0].typeSignCount}次',
-                  style: TextStyle(
-                    color:Color.fromRGBO(5,169,245, 1.0),
-                    fontSize: 11,
-                  ),
-                  textAlign: TextAlign.center,
+          Container(
+            padding: EdgeInsets.only(left: 7.0, right: 7.0),
+            height: 18,
+            decoration: BoxDecoration(
+              color: Color.fromRGBO(196, 236, 255, 1.0),
+              borderRadius: BorderRadius.all(Radius.circular(5.0)),
+            ),
+            child: Center(
+              child: Text(
+                '${newList[index].typeSignCount[0].typeName}元打卡:${newList[index].typeSignCount[0].typeSignCount == null ? 0 : newList[index].typeSignCount[0].typeSignCount}次',
+                style: TextStyle(
+                  color: Color.fromRGBO(5, 169, 245, 1.0),
+                  fontSize: 11,
                 ),
+                textAlign: TextAlign.center,
               ),
             ),
+          ),
           Container(
             padding: EdgeInsets.only(left: 7.0, right: 7.0),
             height: 18,
             margin: EdgeInsets.only(left: 10),
             decoration: BoxDecoration(
-              color: Color.fromRGBO(196,236,255, 1.0),
+              color: Color.fromRGBO(196, 236, 255, 1.0),
               borderRadius: BorderRadius.all(Radius.circular(5.0)),
             ),
             child: Center(
               child: Text(
-                '${newList[index].typeSignCount[1].typeName}元打卡:${newList[index].typeSignCount[1].typeSignCount==null? 0 : newList[index].typeSignCount[1].typeSignCount.toString()}次',
+                '${newList[index].typeSignCount[1].typeName}元打卡:${newList[index].typeSignCount[1].typeSignCount == null ? 0 : newList[index].typeSignCount[1].typeSignCount.toString()}次',
                 style: TextStyle(
-                  color:Color.fromRGBO(234,84,143, 1.0),
+                  color: Color.fromRGBO(234, 84, 143, 1.0),
                   fontSize: 11,
                 ),
                 textAlign: TextAlign.center,
@@ -166,21 +166,20 @@ class _FansListState extends State<FansListPage> {
   Widget build(BuildContext context) {
     // 通过商品列表数组长度判断是否有数据
 //    if (goodsList.data.length > 0) {
-      return
-          ListView.builder(
-        // 滚动控制器
+    return ListView.builder(
+      // 滚动控制器
 
-        controller: scrollController,
-        // 列表长度
-        itemCount: goodsList.data.length,
-        // 列表项构造器
-        itemBuilder: (context, index) {
-          // 列表项，传入列表数据及索引
-          return _ListWidget(goodsList.data, index);
-        },
-      );
-    }
-    // 商品列表没有数据时返回空容器
+      controller: scrollController,
+      // 列表长度
+      itemCount: goodsList.data.length,
+      // 列表项构造器
+      itemBuilder: (context, index) {
+        // 列表项，传入列表数据及索引
+        return _ListWidget(goodsList.data, index);
+      },
+    );
+  }
+// 商品列表没有数据时返回空容器
 //    return Container();
 //  }
 }

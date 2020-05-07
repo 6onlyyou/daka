@@ -42,7 +42,6 @@ class MyApp1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // 风景区介绍文本部分
     return MaterialApp(
 
       title: 'Dio请求',
@@ -74,31 +73,7 @@ class MyApp1 extends StatelessWidget {
   }
 
 
-  Future _scan(BuildContext context) async {
-    try {
-      String barcode = (await BarcodeScanner.scan()) as String;
-//      setState(() {
-//        return this.barcode = barcode;
-//      });
-      print(barcode+"sjdadhaksd");
-//      myDialog(context);
-    } on PlatformException catch (e) {
-      if (e.code == BarcodeScanner.cameraAccessDenied) {
-//        setState(() {
-//          return this.barcode = 'The user did not grant the camera permission!';
-//        });
-      } else {
-//        setState(() {
-//          return this.barcode = 'Unknown error: $e';
-//        });
-      }
-    } on FormatException {
-//      setState(() => this.barcode =
-//      'null (User returned using the "back"-button before scanning anything. Result)');
-    } catch (e) {
-//      setState(() => this.barcode = 'Unknown error: $e');
-    }
-  }
+
 }
 
 class Log extends Dialog{
@@ -161,6 +136,7 @@ class Log extends Dialog{
                   child: Text('啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊哈哈哈哈哈哈',textAlign: TextAlign.left,),
                 )
               ],
+
             ),
           )
       ),

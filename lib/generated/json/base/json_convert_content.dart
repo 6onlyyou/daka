@@ -7,6 +7,8 @@ import 'package:daka/model/fans_data_model.dart';
 import 'package:daka/generated/json/fans_data_model_helper.dart';
 import 'package:daka/model/fans_list_model.dart';
 import 'package:daka/generated/json/fans_list_model_helper.dart';
+import 'package:daka/model/user_info_model.dart';
+import 'package:daka/generated/json/user_info_model_helper.dart';
 
 class JsonConvert<T> {
 	T fromJson(Map<String, dynamic> json) {
@@ -22,7 +24,10 @@ class JsonConvert<T> {
 			return fansDataModelFromJson(data as FansDataModel, json) as T;			case FansListModel:
 			return fansListModelFromJson(data as FansListModel, json) as T;			case FansListData:
 			return fansListDataFromJson(data as FansListData, json) as T;			case FansListDataTypeSignCount:
-			return fansListDataTypeSignCountFromJson(data as FansListDataTypeSignCount, json) as T;    }
+			return fansListDataTypeSignCountFromJson(data as FansListDataTypeSignCount, json) as T;			case UserInfoModel:
+			return userInfoModelFromJson(data as UserInfoModel, json) as T;			case UserInfoData:
+			return userInfoDataFromJson(data as UserInfoData, json) as T;			case UserInfoDataTypeSignCount:
+			return userInfoDataTypeSignCountFromJson(data as UserInfoDataTypeSignCount, json) as T;    }
     return data as T;
   }
 
@@ -31,7 +36,10 @@ class JsonConvert<T> {
 			return fansDataModelToJson(data as FansDataModel);			case FansListModel:
 			return fansListModelToJson(data as FansListModel);			case FansListData:
 			return fansListDataToJson(data as FansListData);			case FansListDataTypeSignCount:
-			return fansListDataTypeSignCountToJson(data as FansListDataTypeSignCount);    }
+			return fansListDataTypeSignCountToJson(data as FansListDataTypeSignCount);			case UserInfoModel:
+			return userInfoModelToJson(data as UserInfoModel);			case UserInfoData:
+			return userInfoDataToJson(data as UserInfoData);			case UserInfoDataTypeSignCount:
+			return userInfoDataTypeSignCountToJson(data as UserInfoDataTypeSignCount);    }
     return data as T;
   }
   //Go back to a single instance by type
@@ -40,7 +48,10 @@ class JsonConvert<T> {
 			return FansDataModel().fromJson(json);			case 'FansListModel':
 			return FansListModel().fromJson(json);			case 'FansListData':
 			return FansListData().fromJson(json);			case 'FansListDataTypeSignCount':
-			return FansListDataTypeSignCount().fromJson(json);    }
+			return FansListDataTypeSignCount().fromJson(json);			case 'UserInfoModel':
+			return UserInfoModel().fromJson(json);			case 'UserInfoData':
+			return UserInfoData().fromJson(json);			case 'UserInfoDataTypeSignCount':
+			return UserInfoDataTypeSignCount().fromJson(json);    }
     return null;
   }
 
@@ -50,7 +61,10 @@ class JsonConvert<T> {
 			return List<FansDataModel>();			case 'FansListModel':
 			return List<FansListModel>();			case 'FansListData':
 			return List<FansListData>();			case 'FansListDataTypeSignCount':
-			return List<FansListDataTypeSignCount>();    }
+			return List<FansListDataTypeSignCount>();			case 'UserInfoModel':
+			return List<UserInfoModel>();			case 'UserInfoData':
+			return List<UserInfoData>();			case 'UserInfoDataTypeSignCount':
+			return List<UserInfoDataTypeSignCount>();    }
     return null;
   }
 

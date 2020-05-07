@@ -1,103 +1,218 @@
+import 'dart:convert';
 
-
+import 'package:daka/model/user_info_model.dart';
+import 'package:daka/service/http_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:flutter/services.dart';
+import 'package:barcode_scan/barcode_scan.dart';
 class Manage extends StatefulWidget {
   final Widget child;
+
   Manage({Key key, this.child}) : super(key: key);
 
   _ManageState createState() => _ManageState();
 }
-//show(BuildContext context)
-//{
-//
-//  print('执行6');
-//  //Future类型,then或者await获取
-//  showDialog(
-//    // 传入 context
-//      context: context,
-//      // 构建 Dialog 的视图
-//      builder: (_) => Stack(
-//        children: <Widget>[
-//          Positioned(
-//              left: ScreenUtil.screenWidth / 10,
-//              top: ScreenUtil.screenWidth / 10 * 3,
-//            child: Container(
-//              padding: EdgeInsets.only(top: 30, left: 20),
-//              child: Column(
-//                mainAxisAlignment: MainAxisAlignment.start,
-//                crossAxisAlignment: CrossAxisAlignment.start,
-//                children: <Widget>[
-//                  Text(
-//                    '${'发现新版本'}',
-//                    style: TextStyle(
-//                        fontSize: 20,
-//                        fontWeight: FontWeight.bold,
-//                        color: Colors.white,
-//                        decoration: TextDecoration.none),
-//                  ),
-//                  Container(
-//                    padding: EdgeInsets.only(left: 3),
-//                    child: Text(
-//                      '大蘇打',
-//                      style: TextStyle(
-//                          fontSize: 14,
-//                          color: Colors.white,
-//                          decoration: TextDecoration.none),
-//                    ),
-//                  ),
-//                ],
-//              ),
-//            ),
-//          ),
-//          Positioned(
-//                left: ScreenUtil.screenWidth / 10 + 20,
-//                top: ScreenUtil.screenWidth / 10 * 3 + 180,
-//              child: Container(
-//                child: Text(
-//                  '大蘇打撒',
-//                  style: TextStyle(
-//                      fontSize: 14,
-//                      fontWeight: FontWeight.w400,
-//                      color: Color(0XFF333333),
-//                      decoration: TextDecoration.none),
-//                ),
-//              )),
-//        ],
-//      )
-//  );
-//}
-Future myDialog(context){
-  return showDialog<Null>(
-    context: context,
-    barrierDismissible: false,
-    builder: (BuildContext context) {
-      return GestureDetector(							// 手势处理事件
 
 
-          onTap: (){
-            Navigator.of(context).pop();				//退出弹出框
-          },
 
-
-          child: Container(								//弹出框的具体事件
-            child: Material(
-              color: Color.fromRGBO(0, 0, 0, 0.5),
-              child: Center(
-                child: Text('具体操作',style: TextStyle(color: Colors.white),),
-              ),
-            ),
-          )
-      );
-
-    },
-  );
-}
 class _ManageState extends State<Manage> {
+  UserInfoModel usersList = UserInfoModel();
+  Future _scan(BuildContext context) async {
+    try {
+      ScanResult barcode = await BarcodeScanner.scan();
+      print(barcode.rawContent+"内容");
+      getFans(barcode.rawContent);
+    } on PlatformException catch (e) {
+      print(e.toString()+"测试2");
+      if (e.code == BarcodeScanner.cameraAccessDenied) {
+      } else {
+      }
+    } on FormatException {
+    } catch (e) {
+      print("$e测试6");
+    }
+  }
+  Future myDialog(context) {
+    return showDialog<Null>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return GestureDetector(
+          // 手势处理事件
+          onTap: () {
+            Navigator.of(context).pop(); //退出弹出框
+          },
+          child: Material(
+            type: MaterialType.transparency,
+            child: Center(
+                child: Container(
+                  height: 298,
+                  width: 275,
+//            padding: EdgeInsets.only(left: 50),
+                  decoration: new BoxDecoration(
+                    image: new DecorationImage(
+                      image: AssetImage("images/completebg.9.png"),
+                      //这里是从assets静态文件中获取的，也可以new NetworkImage(）从网络上获取
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                          padding: EdgeInsets.only(top: 50),
+                          child: Stack(
+                            children: <Widget>[
+                              Align(
+                                child: Text(
+                                  '用户详情',
+                                  style: TextStyle(
+                                    color: Color.fromRGBO(51, 51, 51, 1.0),
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                alignment: Alignment.center,
+                              ),
+                            ],
+                          )),
+                      Container(
+                        padding: EdgeInsets.only(left: 45),
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                              margin: EdgeInsets.only(top: 15),
+                              width: double.infinity,
+                              child: Text(
+                                '用户昵称：${usersList.data.wechatNickname==null? "":usersList.data.wechatNickname }',
+                                style: TextStyle(
+                                  color: Color.fromRGBO(102, 102, 102, 1.0),
+                                  fontSize: 15,
+                                ),
+                                textAlign: TextAlign.left,
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(top: 10),
+                              width: double.infinity,
+                              child: Text(
+                                '${usersList.data.typeSignCount[0].typeName}元打卡次数：${usersList.data.typeSignCount[0].typeSignCount==null?0:usersList.data.typeSignCount[0].typeSignCount}次',
+                                style: TextStyle(
+                                  color: Color.fromRGBO(102, 102, 102, 1.0),
+                                  fontSize: 15,
+                                ),
+                                textAlign: TextAlign.left,
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(top: 10),
+                              width: double.infinity,
+                              child: Text(
+                                '${usersList.data.typeSignCount[1].typeName}元打卡次数：${usersList.data.typeSignCount[1].typeSignCount==null?0:usersList.data.typeSignCount[1].typeSignCount}次',
+                                style: TextStyle(
+                                  color: Color.fromRGBO(102, 102, 102, 1.0),
+                                  fontSize: 15,
+                                ),
+                                textAlign: TextAlign.left,
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(top: 10),
+                              width: double.infinity,
+                              child: Text(
+                                '请选择盖章类型?',
+                                style: TextStyle(
+                                  color: Color.fromRGBO(51, 51, 51, 1.0),
+                                  fontSize: 15,
+                                ),
+                                textAlign: TextAlign.left,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(top: 10),
+                        width: double.infinity,
+                        child: Row(
+                          children: <Widget>[
+                            Container(
+                                margin: EdgeInsets.only(left: 30),
+                                child:  RaisedButton(
+                                  child: new Text("15元打卡"),
+                                  color: Colors.white,
+
+                                  textColor: Color.fromRGBO(29, 168, 239, 1.0),
+                                  onPressed: () {
+//                              _login();
+                                  },
+                                  disabledColor: Colors.grey,
+                                  disabledTextColor: Colors.white,
+                                  disabledElevation: 4,
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0) ,side: BorderSide(color: Color.fromRGBO(196, 236, 255, 1.0))), //圆角大小
+                                )
+                            ),
+                            Container(
+                                margin: EdgeInsets.only(left: 20),
+                                child:  RaisedButton(
+
+                                  child: new Text("15元打卡"),
+                                  color: Colors.white,
+
+                                  textColor: Color.fromRGBO(29, 168, 239, 1.0),
+                                  onPressed: () {
+//                              _login();
+                                  },
+                                  disabledColor: Colors.grey,
+                                  disabledTextColor: Colors.white,
+                                  disabledElevation: 4,
+
+
+//          onPressed: null,// 设置为null即为不可点击（disabled）状态
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0) ,side: BorderSide(color: Color.fromRGBO(196, 236, 255, 1.0))), //圆角大小
+                                )
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                )),
+          ),
+        );
+      },
+    );
+
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print('Jsonsss格式:::ssss' );
+  }
+  void getFans(String url1) async {
+    // 请求url
+    var url = url1;
+    // 请求参数：店铺Id
+//    var formData = {'merchantId': '9'};
+    print('Jsonsss格式:::ssss' );
+    // 调用请求方法传入url及表单数据
+    await requestHead(url).then((value) {
+      // 返回数据进行Json解码
+      var data = json.decode(value.toString());
+      // 打印数据
+      print('Jsonsss格式:::' + data.toString());
+
+      // 设置状态刷新数据
+      setState(() {
+        // 将返回的Json数据转换成Model
+        var fansListModel = new UserInfoModel();
+        usersList = fansListModel.fromJson(data);
+        myDialog(context);
+      });
+    });
+  }
   Widget buttonContainer = Container(
     // 设置上下左右内边距
-
     margin: EdgeInsets.only(top: 30),
     padding: EdgeInsets.only(bottom: 10),
     width: 90,
@@ -121,24 +236,21 @@ class _ManageState extends State<Manage> {
       ),
     ),
   );
+
   _ManageState();
+
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context);
-
 //If the design is based on the size of the iPhone6 ​​(iPhone6 ​​750*1334)
     ScreenUtil.init(context, width: 750, height: 1334);
-
 //If you want to set the font size is scaled according to the system's "font size" assist option
     ScreenUtil.init(context, width: 750, height: 1334, allowFontScaling: true);
-   return Container(
+    return Container(
         child: GestureDetector(
             onTap: () {
               print('click-OK');
-              myDialog(context);
-//                        _scan(context);
-//                        Navigator.push(context,
-//                            MaterialPageRoute(builder: (context) => ewMPage()));
+              _scan(context);
             },
             child: buttonContainer));
   }
