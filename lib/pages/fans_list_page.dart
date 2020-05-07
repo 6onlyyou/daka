@@ -1,4 +1,5 @@
 import 'package:daka/model/fans_list_model.dart';
+import 'package:daka/model/his_list_model.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import '../service/http_service.dart';
@@ -10,7 +11,7 @@ class FansListPage extends StatefulWidget {
 class _FansListState extends State<FansListPage> {
   // 初始化数据模型
   FansListModel goodsList = FansListModel();
-
+  HisListModel hisList = HisListModel();
   // 滚动控制
   var scrollController = ScrollController();
 
@@ -21,7 +22,46 @@ class _FansListState extends State<FansListPage> {
     print('商品1');
     getFans();
   }
+  _showModalBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => Container(
+        child: ListView(
+            children: List.generate(
+              hisList.data.length,
+                  (index) => InkWell(
+                  child: Container(alignment: Alignment.center, height: 40.0, child: Text('${hisList.data[index].typeName}元打卡时间:${hisList.data[index].signTime}')),
+                  onTap: () {
+                    print('tapped item ${index + 1}');
+                    Navigator.pop(context);
+                  }),
+            )),
+        height: 220,
+      ),
+    );
+  }
+  void getHisFans() async {
+    // 请求url
+    var url = 'http://www.konkonyu.com/appservice/wechat/qrcode/getUsreClockHistoryList';
+    // 请求参数：店铺Id
+    var formData = {'userId': '20041275561419','merchantId': '9'};
 
+    // 调用请求方法传入url及表单数据
+    await request(url, formData: formData).then((value) {
+      // 返回数据进行Json解码
+      var data = json.decode(value.toString());
+      // 打印数据
+      print('商品列表数据Json格式:::' + data.toString());
+
+      // 设置状态刷新数据
+      setState(() {
+        // 将返回的Json数据转换成Model
+        var hisListModel = new HisListModel();
+        hisList = hisListModel.fromJson(data);
+        _showModalBottomSheet(context);
+      });
+    });
+  }
   void getFans() async {
     // 请求url
     var url = 'http://www.konkonyu.com/appservice/wechat/qrcode/getFansList';
@@ -45,7 +85,7 @@ class _FansListState extends State<FansListPage> {
   }
 
   // 商品列表项
-  Widget _ListWidget(List newList, int index) {
+  Widget _ListWidget(BuildContext context, List newList, int index) {
     return Container(
       padding: const EdgeInsets.all(16.0),
       height: 80,
@@ -60,23 +100,27 @@ class _FansListState extends State<FansListPage> {
 //            bottom: BorderSide(width: 1.0, color: Colors.black12),
 //          )
       ),
-
-      // 水平方向布局
-      child: Row(
-        children: <Widget>[
-          // 返回商品图片
-          _goodsImage(newList, index),
-          SizedBox(
-            width: 16,
-          ),
-          // 右侧使用垂直布局
-          Column(
-            children: <Widget>[
-              _goodsName(newList, index),
-              _goodsPrice(newList, index),
-            ],
-          ),
-        ],
+      child: new FlatButton(
+        // 水平方向布局
+        onPressed: () => getHisFans(),
+//      onPressed:myHisDialog(context) ,
+//      onPressed: myHisDialog(context),
+        child: Row(
+          children: <Widget>[
+            // 返回商品图片
+            _goodsImage(newList, index),
+            SizedBox(
+              width: 16,
+            ),
+            // 右侧使用垂直布局
+            Column(
+              children: <Widget>[
+                _goodsName(newList, index),
+                _goodsPrice(newList, index),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -175,7 +219,8 @@ class _FansListState extends State<FansListPage> {
       // 列表项构造器
       itemBuilder: (context, index) {
         // 列表项，传入列表数据及索引
-        return _ListWidget(goodsList.data, index);
+
+        return _ListWidget(context, goodsList.data, index);
       },
     );
   }
