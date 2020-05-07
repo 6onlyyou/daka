@@ -1,11 +1,14 @@
 import 'dart:convert';
 
+import 'package:daka/model/gai_zhang_model.dart';
 import 'package:daka/model/user_info_model.dart';
 import 'package:daka/service/http_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/services.dart';
 import 'package:barcode_scan/barcode_scan.dart';
+
+import 'Toast.dart';
 class Manage extends StatefulWidget {
   final Widget child;
 
@@ -18,6 +21,7 @@ class Manage extends StatefulWidget {
 
 class _ManageState extends State<Manage> {
   UserInfoModel usersList = UserInfoModel();
+  GaiZhangModel gaiZhangModel = GaiZhangModel();
   Future _scan(BuildContext context) async {
     try {
       ScanResult barcode = await BarcodeScanner.scan();
@@ -32,6 +36,19 @@ class _ManageState extends State<Manage> {
     } catch (e) {
       print("$e测试6");
     }
+  }
+  Future<void> _askedToLoad(String content) async {
+    return showDialog<Null>(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return new AlertDialog(
+            title: new Text("恭喜"+usersList.data.wechatNickname+"获得"+content, style: new TextStyle(fontSize: 17.0)),
+            actions: <Widget>[
+            ],
+          );
+        }
+    );
   }
   Future myDialog(context) {
     return showDialog<Null>(
@@ -138,12 +155,13 @@ class _ManageState extends State<Manage> {
                             Container(
                                 margin: EdgeInsets.only(left: 30),
                                 child:  RaisedButton(
-                                  child: new Text("15元打卡"),
+                                  child: new Text("${usersList.data.typeSignCount[0].typeName}元打卡"),
                                   color: Colors.white,
 
                                   textColor: Color.fromRGBO(29, 168, 239, 1.0),
                                   onPressed: () {
-//                              _login();
+                                    Navigator.of(context).pop(); //退出弹出框
+                                    getGsiX(usersList.data.id,usersList.data.typeSignCount[0].typeId);
                                   },
                                   disabledColor: Colors.grey,
                                   disabledTextColor: Colors.white,
@@ -155,12 +173,13 @@ class _ManageState extends State<Manage> {
                                 margin: EdgeInsets.only(left: 20),
                                 child:  RaisedButton(
 
-                                  child: new Text("15元打卡"),
+                                  child: new Text("${usersList.data.typeSignCount[1].typeName}元打卡"),
                                   color: Colors.white,
 
                                   textColor: Color.fromRGBO(29, 168, 239, 1.0),
                                   onPressed: () {
-//                              _login();
+                                    Navigator.of(context).pop(); //退出弹出框
+                               getGsiX(usersList.data.id,usersList.data.typeSignCount[1].typeId);
                                   },
                                   disabledColor: Colors.grey,
                                   disabledTextColor: Colors.white,
@@ -189,12 +208,39 @@ class _ManageState extends State<Manage> {
     super.initState();
     print('Jsonsss格式:::ssss' );
   }
+  void getGsiX(int userAccount,int typeId) async {
+    // 请求url
+    var url = 'http://www.konkonyu.com/appservice/wechat/qrcode/seal';
+    // 请求参数：店铺Id
+    var formData = {'merchantAccount': '9','merchantPassword': 'fushuaige...','userAccount': userAccount,'typeId': typeId};
+
+    // 调用请求方法传入url及表单数据
+    await request(url, formData: formData).then((value) {
+      // 返回数据进行Json解码
+      var data = json.decode(value.toString());
+      // 打印数据
+      print('商品列表数据Json格式:::' + data.toString());
+
+      // 设置状态刷新数据
+      setState(() {
+        // 将返回的Json数据转换成Model
+        var fansListModel = new GaiZhangModel();
+        gaiZhangModel = fansListModel.fromJson(data);
+        if(gaiZhangModel.data=="盖章成功"){
+          Toast.toast(context,msg: "打卡成功",position: ToastPostion.bottom);
+        }else{
+          _askedToLoad(gaiZhangModel.data);
+        }
+
+      });
+    });
+  }
+
   void getFans(String url1) async {
     // 请求url
     var url = url1;
     // 请求参数：店铺Id
 //    var formData = {'merchantId': '9'};
-    print('Jsonsss格式:::ssss' );
     // 调用请求方法传入url及表单数据
     await requestHead(url).then((value) {
       // 返回数据进行Json解码
@@ -250,6 +296,7 @@ class _ManageState extends State<Manage> {
         child: GestureDetector(
             onTap: () {
               print('click-OK');
+
               _scan(context);
             },
             child: buttonContainer));

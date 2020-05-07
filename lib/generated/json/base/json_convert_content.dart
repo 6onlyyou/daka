@@ -9,6 +9,8 @@ import 'package:daka/model/fans_list_model.dart';
 import 'package:daka/generated/json/fans_list_model_helper.dart';
 import 'package:daka/model/user_info_model.dart';
 import 'package:daka/generated/json/user_info_model_helper.dart';
+import 'package:daka/model/gai_zhang_model.dart';
+import 'package:daka/generated/json/gai_zhang_model_helper.dart';
 
 class JsonConvert<T> {
 	T fromJson(Map<String, dynamic> json) {
@@ -27,7 +29,8 @@ class JsonConvert<T> {
 			return fansListDataTypeSignCountFromJson(data as FansListDataTypeSignCount, json) as T;			case UserInfoModel:
 			return userInfoModelFromJson(data as UserInfoModel, json) as T;			case UserInfoData:
 			return userInfoDataFromJson(data as UserInfoData, json) as T;			case UserInfoDataTypeSignCount:
-			return userInfoDataTypeSignCountFromJson(data as UserInfoDataTypeSignCount, json) as T;    }
+			return userInfoDataTypeSignCountFromJson(data as UserInfoDataTypeSignCount, json) as T;			case GaiZhangModel:
+			return gaiZhangModelFromJson(data as GaiZhangModel, json) as T;    }
     return data as T;
   }
 
@@ -39,7 +42,8 @@ class JsonConvert<T> {
 			return fansListDataTypeSignCountToJson(data as FansListDataTypeSignCount);			case UserInfoModel:
 			return userInfoModelToJson(data as UserInfoModel);			case UserInfoData:
 			return userInfoDataToJson(data as UserInfoData);			case UserInfoDataTypeSignCount:
-			return userInfoDataTypeSignCountToJson(data as UserInfoDataTypeSignCount);    }
+			return userInfoDataTypeSignCountToJson(data as UserInfoDataTypeSignCount);			case GaiZhangModel:
+			return gaiZhangModelToJson(data as GaiZhangModel);    }
     return data as T;
   }
   //Go back to a single instance by type
@@ -51,7 +55,8 @@ class JsonConvert<T> {
 			return FansListDataTypeSignCount().fromJson(json);			case 'UserInfoModel':
 			return UserInfoModel().fromJson(json);			case 'UserInfoData':
 			return UserInfoData().fromJson(json);			case 'UserInfoDataTypeSignCount':
-			return UserInfoDataTypeSignCount().fromJson(json);    }
+			return UserInfoDataTypeSignCount().fromJson(json);			case 'GaiZhangModel':
+			return GaiZhangModel().fromJson(json);    }
     return null;
   }
 
@@ -64,7 +69,8 @@ class JsonConvert<T> {
 			return List<FansListDataTypeSignCount>();			case 'UserInfoModel':
 			return List<UserInfoModel>();			case 'UserInfoData':
 			return List<UserInfoData>();			case 'UserInfoDataTypeSignCount':
-			return List<UserInfoDataTypeSignCount>();    }
+			return List<UserInfoDataTypeSignCount>();			case 'GaiZhangModel':
+			return List<GaiZhangModel>();    }
     return null;
   }
 
