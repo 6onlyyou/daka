@@ -1,5 +1,6 @@
 import 'package:daka/model/fans_list_model.dart';
 import 'package:daka/model/his_list_model.dart';
+import 'package:daka/tools/UserLoggedInEvent.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import '../service/http_service.dart';
@@ -12,6 +13,7 @@ class _FansListState extends State<FansListPage> {
   // 初始化数据模型
   FansListModel goodsList = FansListModel();
   HisListModel hisList = HisListModel();
+
   // 滚动控制
   var scrollController = ScrollController();
 
@@ -20,31 +22,50 @@ class _FansListState extends State<FansListPage> {
     super.initState();
     // 获取商品数据
     print('商品1');
+    _listen();
     getFans();
   }
+
+  void _listen() {
+    eventBus.on<UserLoggedInEvent>().listen((event) {
+      if (event.text == "200") {
+        setState(() {
+          getFans();
+        });
+      }
+    });
+  }
+
   _showModalBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
       builder: (context) => Container(
         child: ListView(
             children: List.generate(
-              hisList.data.length,
-                  (index) => InkWell(
-                  child: Container(alignment: Alignment.center, height: 40.0, child: Text('${hisList.data[index].typeName}元打卡时间:${hisList.data[index].signTime}')),
-                  onTap: () {
-                    print('tapped item ${index + 1}');
-                    Navigator.pop(context);
-                  }),
-            )),
-        height: 220,
+          hisList.data.length,
+          (index) => InkWell(
+              child: Container(
+                  alignment: Alignment.center,
+                  height: 40.0,
+                  child: Text(
+                      '${hisList.data[index].typeName}元打卡时间:${hisList.data[index].signTime}')),
+              onTap: () {
+                print('tapped item ${index + 1}');
+                Navigator.pop(context);
+              }),
+        )),
+        height: 200,
       ),
     );
   }
-  void getHisFans() async {
+
+  void getHisFans(int posion) async {
+    progressDialog(context);
     // 请求url
-    var url = 'http://www.konkonyu.com/appservice/wechat/qrcode/getUsreClockHistoryList';
+    var url =
+        'http://www.konkonyu.com/appservice/wechat/qrcode/getUsreClockHistoryList';
     // 请求参数：店铺Id
-    var formData = {'userId': '20041275561419','merchantId': '9'};
+    var formData = {'userId': goodsList.data[posion].userId, 'merchantId': '9'};
 
     // 调用请求方法传入url及表单数据
     await request(url, formData: formData).then((value) {
@@ -58,10 +79,42 @@ class _FansListState extends State<FansListPage> {
         // 将返回的Json数据转换成Model
         var hisListModel = new HisListModel();
         hisList = hisListModel.fromJson(data);
+        Navigator.of(context).pop();
         _showModalBottomSheet(context);
       });
     });
   }
+
+  Future progressDialog(context) {
+    return showDialog<Null>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return GestureDetector(
+          // 手势处理事件
+          onTap: () {
+            Navigator.of(context).pop(); //退出弹出框
+          },
+          child: Material(
+            type: MaterialType.transparency,
+            child: Center(
+                child: Container(
+              height: 60,
+              width: 60,
+              // 圆形进度条
+              child: CircularProgressIndicator(
+                strokeWidth: 3.0,
+//                    backgroundColor: Colors.blue,
+                // value: 0.2,
+                valueColor: new AlwaysStoppedAnimation<Color>(Colors.red),
+              ),
+            )),
+          ),
+        );
+      },
+    );
+  }
+
   void getFans() async {
     // 请求url
     var url = 'http://www.konkonyu.com/appservice/wechat/qrcode/getFansList';
@@ -102,7 +155,7 @@ class _FansListState extends State<FansListPage> {
       ),
       child: new FlatButton(
         // 水平方向布局
-        onPressed: () => getHisFans(),
+        onPressed: () => getHisFans(index),
 //      onPressed:myHisDialog(context) ,
 //      onPressed: myHisDialog(context),
         child: Row(

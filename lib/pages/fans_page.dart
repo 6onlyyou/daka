@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:daka/model/fans_data_model.dart';
 import 'package:daka/service/http_service.dart';
+import 'package:daka/tools/UserLoggedInEvent.dart';
 import 'package:flutter/material.dart';
 class FansPage extends StatefulWidget {
   @override
@@ -19,8 +20,17 @@ class _FansPageState extends State<FansPage> {
   void initState() {
     super.initState();
     // 获取商品数据
-
+    _listen();
     getData();
+  }
+  void _listen(){
+    eventBus.on<UserLoggedInEvent>().listen((event){
+      if(event.text=="200"){
+        setState(() {
+          getData();
+        });
+      }
+    });
   }
   void getData() async {
     // 请求url
@@ -33,7 +43,7 @@ class _FansPageState extends State<FansPage> {
       // 返回数据进行Json解码
       var data = json.decode(value.toString());
       // 打印数据
-      print('商品列表数据Json格式:::' + data.toString());
+      print('Json格式:::' + data.toString());
 
       // 设置状态刷新数据
       setState(() {
@@ -46,31 +56,36 @@ class _FansPageState extends State<FansPage> {
   @override
   Widget build(BuildContext context) {
 
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      height: 60,
-      margin: const EdgeInsets.fromLTRB(16, 10.0, 16, 0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(12.0)),
+    if(fansList.data==null){
+      return Container();
+    }else{
+      return Container(
+        padding: const EdgeInsets.all(16.0),
+        height: 60,
+        margin: const EdgeInsets.fromLTRB(16, 10.0, 16, 0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(12.0)),
 //          border: Border(
 //            left: BorderSide(width: 1.0, color: Colors.black12),
 //            top: BorderSide(width: 1.0, color: Colors.black12),
 //            right: BorderSide(width: 1.0, color: Colors.black12),
 //            bottom: BorderSide(width: 1.0, color: Colors.black12),
 //          )
-      ),
+        ),
 
-      // 水平方向布局
-      child: Row(
-        children: <Widget>[
-          _Name(fansList.data),
-          _fansNum(fansList.data),
-          // 返回商品图片
-          // 右侧使用垂直布局
-        ],
-      ),
-    );
+        // 水平方向布局
+        child: Row(
+          children: <Widget>[
+            _Name(fansList.data),
+            _fansNum(fansList.data),
+            // 返回商品图片
+            // 右侧使用垂直布局
+          ],
+        ),
+      );
+    }
+
   }
   // 商品名称
   Widget _Name(int fansnum) {

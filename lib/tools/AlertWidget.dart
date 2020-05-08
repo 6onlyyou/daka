@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 
 import 'Toast.dart';
+import 'UserLoggedInEvent.dart';
 
 class Manage extends StatefulWidget {
   final Widget child;
@@ -315,6 +316,7 @@ class _ManageState extends State<Manage> {
         } else {
           _askedToLoad(gaiZhangModel.data);
         }
+        eventBus.fire(new UserLoggedInEvent("200"));
       });
     });
   }
