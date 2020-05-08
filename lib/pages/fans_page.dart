@@ -56,9 +56,6 @@ class _FansPageState extends State<FansPage> {
   @override
   Widget build(BuildContext context) {
 
-    if(fansList.data==null){
-      return Container();
-    }else{
       return Container(
         padding: const EdgeInsets.all(16.0),
         height: 60,
@@ -84,7 +81,6 @@ class _FansPageState extends State<FansPage> {
           ],
         ),
       );
-    }
 
   }
   // 商品名称
