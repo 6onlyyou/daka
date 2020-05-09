@@ -32,17 +32,14 @@ class _State extends State<MyApp> {
     super.initState();
     var future = get();
     future.then((value) {
-      print("哈哈哈" + value);
       setState(() {
         homme = value;
       });
-
     });
   }
 
   @override
   Widget build(BuildContext context) {
-
     if (homme  == "1") {
       return MaterialApp(home: HomePage());
     } else {
@@ -52,23 +49,3 @@ class _State extends State<MyApp> {
   }
 }
 
-//class MyApp extends  {
-//  //手势函数声明
-//
-//
-//  @override
-//  Widget build(BuildContext context) {
-//    var homme = "";
-//    var future = get();
-//    future.then((value) {
-//      print("哈哈哈" + value);
-//      return MaterialApp(home: Login());
-//      homme = value;
-//    });
-////    if (homme  == "1") {
-//      return MaterialApp(home: HomePage());
-////    } else {
-////      return MaterialApp(home: Login());
-////    }
-//  }
-//}
