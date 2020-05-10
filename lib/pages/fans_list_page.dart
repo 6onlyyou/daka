@@ -124,6 +124,7 @@ class _FansListState extends State<FansListPage> {
     // 调用请求方法传入url及表单数据
     await request(url, formData: formData).then((value) {
       // 返回数据进行Json解码
+
       var data = json.decode(value.toString());
       // 打印数据
       print('商品列表数据Json格式:::' + data.toString());

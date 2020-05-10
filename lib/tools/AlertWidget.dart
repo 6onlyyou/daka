@@ -324,6 +324,7 @@ class _ManageState extends State<Manage> {
   void getFans(String url1) async {
     // 请求url
     var url = url1;
+    print('urld地址:::' + url1.toString());
     // 请求参数：店铺Id
 //    var formData = {'merchantId': '9'};
     // 调用请求方法传入url及表单数据

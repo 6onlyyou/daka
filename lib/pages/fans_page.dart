@@ -37,7 +37,7 @@ class _FansPageState extends State<FansPage> {
     var url = 'http://www.konkonyu.com/appservice/wechat/qrcode/getFans';
     // 请求参数：店铺Id
     var formData = {'merchantId': '9'};
-
+    print('urld地址:::' + url.toString());
     // 调用请求方法传入url及表单数据
     await request(url, formData: formData).then((value) {
       // 返回数据进行Json解码
