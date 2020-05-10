@@ -15,7 +15,8 @@ import 'pages/fans_page.dart';
 void main() {
   runApp(MyApp());
 }
-class  MyApp extends StatefulWidget {
+
+class MyApp extends StatefulWidget {
   @override
   _State createState() => _State();
 }
@@ -26,9 +27,17 @@ Future<String> get() async {
   userName = await prefs.getString("loging");
   return userName;
 }
+Future<String> getpass() async {
+  var userName;
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  userName = await prefs.getString("logingpass");
+  return userName;
+}
+
 class _State extends State<MyApp> {
   var homme = "";
-  void initState(){
+
+  void initState() {
     super.initState();
     var future = get();
     future.then((value) {
@@ -40,12 +49,12 @@ class _State extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    if (homme  == "1") {
-      return MaterialApp(home: HomePage());
-    } else {
+//    print('homesss是:::' + homme);
+    if (homme == "null" ||homme == ""||homme == null) {
       return MaterialApp(home: Login());
+    } else {
+      return MaterialApp(home: HomePage());
     }
 //    return Container();
   }
 }
-

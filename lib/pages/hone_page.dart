@@ -13,7 +13,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'fans_page.dart';
 class HomePage extends StatelessWidget {
   //手势函数声明
-
+  var hommepassword = "";
   Widget textContainer = Container(
     // 设置上下左右内边距
     padding: EdgeInsets.only(top: 20),
@@ -40,6 +40,9 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 //    super.build(context);
+    ScreenUtil.init(context, width: 375, height: 812, allowFontScaling: false);
+//    ScreenUtil.init(context);
+//    ScreenUtil.init(context, width: 750, height: 1334, allowFontScaling: false);
     return  Scaffold(
 
         body: Container(
@@ -57,8 +60,8 @@ class HomePage extends StatelessWidget {
               textContainer,
               FansPage(),
               Container(
-                  margin: EdgeInsets.only(top: 10),
-                  height: 310,
+                  margin: EdgeInsets.only(top: ScreenUtil().setHeight(10)),
+                  height: ScreenUtil().setHeight(440),
                   child: FansListPage()),
               Manage(),
             ],

@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/services.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 
+import '../main.dart';
 import 'Toast.dart';
 import 'UserLoggedInEvent.dart';
 
@@ -20,9 +21,30 @@ class Manage extends StatefulWidget {
 }
 
 class _ManageState extends State<Manage> {
+
   UserInfoModel usersList = UserInfoModel();
   GaiZhangModel gaiZhangModel = GaiZhangModel();
+  var homme = "";
+  var hommepassword = "";
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    var future = get();
+    future.then((value) {
+      setState(() {
+        homme = value;
+      });
+    });
+    var future1 = getpass();
+    future1.then((value) {
+      setState(() {
+        hommepassword = value;
+      });
+    });
 
+    print('Jsonsss格式:::ssss');
+  }
   Future _scan(BuildContext context) async {
     try {
       ScanResult barcode = await BarcodeScanner.scan();
@@ -113,7 +135,7 @@ class _ManageState extends State<Manage> {
           return new AlertDialog(
             title: new Text(
                 "恭喜" + usersList.data.wechatNickname + "获得" + content,
-                style: new TextStyle(fontSize: 17.0)),
+                style: new TextStyle(fontSize:ScreenUtil().setSp(17))),
             actions: <Widget>[],
           );
         });
@@ -134,7 +156,7 @@ class _ManageState extends State<Manage> {
             child: Center(
                 child: Container(
               height: 298,
-              width: 275,
+              width:275,
 //            padding: EdgeInsets.only(left: 50),
               decoration: new BoxDecoration(
                 image: new DecorationImage(
@@ -281,20 +303,17 @@ class _ManageState extends State<Manage> {
 
 
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    print('Jsonsss格式:::ssss');
-  }
+
 
   void getGsiX(int userAccount, int typeId) async {
     // 请求url
     var url = 'http://www.konkonyu.com/appservice/wechat/qrcode/seal';
+    print('homme:::' + homme);
+    print('hommepassword:::' + hommepassword);
     // 请求参数：店铺Id
     var formData = {
-      'merchantAccount': '9',
-      'merchantPassword': 'fushuaige...',
+      'merchantAccount': homme,
+      'merchantPassword': hommepassword,
       'userAccount': userAccount,
       'typeId': typeId
     };
@@ -304,7 +323,7 @@ class _ManageState extends State<Manage> {
       // 返回数据进行Json解码
       var data = json.decode(value.toString());
       // 打印数据
-      print('商品列表数据Json格式:::' + data.toString());
+      print('Json格式:::' + data.toString());
 
       // 设置状态刷新数据
       setState(() {
@@ -374,11 +393,11 @@ class _ManageState extends State<Manage> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context);
-//If the design is based on the size of the iPhone6 ​​(iPhone6 ​​750*1334)
-    ScreenUtil.init(context, width: 750, height: 1334);
-//If you want to set the font size is scaled according to the system's "font size" assist option
-    ScreenUtil.init(context, width: 750, height: 1334, allowFontScaling: true);
+//    ScreenUtil.init(context);
+////If the design is based on the size of the iPhone6 ​​(iPhone6 ​​750*1334)
+//    ScreenUtil.init(context, width: 750, height: 1334);
+////If you want to set the font size is scaled according to the system's "font size" assist option
+//    ScreenUtil.init(context, width: 750, height: 1334, allowFontScaling: true);
     return Container(
         child: GestureDetector(
             onTap: () {

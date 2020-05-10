@@ -5,6 +5,8 @@ import 'package:daka/model/fans_data_model.dart';
 import 'package:daka/service/http_service.dart';
 import 'package:daka/tools/UserLoggedInEvent.dart';
 import 'package:flutter/material.dart';
+
+import '../main.dart';
 class FansPage extends StatefulWidget {
   @override
   _FansPageState createState() => _FansPageState();
@@ -16,17 +18,36 @@ class _FansPageState extends State<FansPage> {
   AnimationController controller;
   // 补间对象
   Animation animation;
+  var username = "";
+  var password = "";
   @override
   void initState() {
     super.initState();
     // 获取商品数据
-    _listen();
-    getData();
+    var future = get();
+
+    future.then((value) {
+      setState(() {
+        print("111");
+        username = value;
+      });
+    });
+    var future1 = getpass();
+    future1.then((value) {
+      setState(() {
+        print("111pass");
+        password = value;
+        _listen();
+        getData();
+      });
+    });
+
   }
   void _listen(){
     eventBus.on<UserLoggedInEvent>().listen((event){
       if(event.text=="200"){
         setState(() {
+          print("222");
           getData();
         });
       }
@@ -36,7 +57,7 @@ class _FansPageState extends State<FansPage> {
     // 请求url
     var url = 'http://www.konkonyu.com/appservice/wechat/qrcode/getFans';
     // 请求参数：店铺Id
-    var formData = {'merchantId': '9'};
+    var formData = {'merchantId':username};
     print('urld地址:::' + url.toString());
     // 调用请求方法传入url及表单数据
     await request(url, formData: formData).then((value) {
@@ -44,7 +65,8 @@ class _FansPageState extends State<FansPage> {
       var data = json.decode(value.toString());
       // 打印数据
       print('Json格式:::' + data.toString());
-
+      print('id是fans:::' + username);
+      print('id是fans:::' + password);
       // 设置状态刷新数据
       setState(() {
         // 将返回的Json数据转换成Model
