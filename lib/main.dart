@@ -51,9 +51,9 @@ class _State extends State<MyApp> {
   Widget build(BuildContext context) {
 //    print('homesss是:::' + homme);
     if (homme == "null" ||homme == ""||homme == null) {
-      return MaterialApp(home: Login());
+      return MaterialApp(home: Login(), debugShowCheckedModeBanner: false,);
     } else {
-      return MaterialApp(home: HomePage());
+      return MaterialApp(home: HomePage(), debugShowCheckedModeBanner: false,);
     }
 //    return Container();
   }
