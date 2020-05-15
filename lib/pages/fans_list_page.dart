@@ -65,7 +65,7 @@ class _FansListState extends State<FansListPage> {
                   alignment: Alignment.center,
                   height: ScreenUtil().setHeight(60),
                   child: Text(
-                      '${hisList.data[index].typeName}元打卡时间:${hisList.data[index].signTime}')),
+                      '${hisList.data[index].typeName}元  打卡时间: ${hisList.data[index].signTime}')),
               onTap: () {
                 print('tapped item ${index + 1}');
                 Navigator.pop(context);
