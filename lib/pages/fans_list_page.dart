@@ -55,6 +55,7 @@ class _FansListState extends State<FansListPage> {
 
   _showModalBottomSheet(BuildContext context) {
     showModalBottomSheet(
+
       context: context,
       builder: (context) => Container(
         child: ListView(
@@ -63,7 +64,7 @@ class _FansListState extends State<FansListPage> {
           (index) => InkWell(
               child: Container(
                   alignment: Alignment.center,
-                  height: ScreenUtil().setHeight(60),
+                  height: ScreenUtil().setHeight(50),
                   child: Text(
                       '${hisList.data[index].typeName}元  打卡时间: ${hisList.data[index].signTime}')),
               onTap: () {
@@ -71,7 +72,7 @@ class _FansListState extends State<FansListPage> {
                 Navigator.pop(context);
               }),
         )),
-        height: ScreenUtil().setHeight(300),
+        height: ScreenUtil().setHeight(260),
       ),
     );
   }
@@ -239,8 +240,8 @@ class _FansListState extends State<FansListPage> {
       child: Row(
         children: <Widget>[
           Container(
-            padding: EdgeInsets.only(left: ScreenUtil().setHeight(7), right: ScreenUtil().setHeight(7)),
-            height:  ScreenUtil().setHeight(20),
+            padding: EdgeInsets.only(left: ScreenUtil().setHeight(8), right: ScreenUtil().setHeight(9)),
+            height:  ScreenUtil().setHeight(22),
 
             decoration: BoxDecoration(
               color: Color.fromRGBO(196, 236, 255, 1.0),
@@ -251,15 +252,15 @@ class _FansListState extends State<FansListPage> {
                 '${newList[index].typeSignCount[0].typeName}元打卡:${newList[index].typeSignCount[0].typeSignCount == null ? 0 : newList[index].typeSignCount[0].typeSignCount}次',
                 style: TextStyle(
                   color: Color.fromRGBO(5, 169, 245, 1.0),
-                  fontSize: ScreenUtil().setSp(11),
+                  fontSize: ScreenUtil().setSp(12),
                 ),
                 textAlign: TextAlign.center,
               ),
             ),
           ),
           Container(
-            padding: EdgeInsets.only(left: ScreenUtil().setHeight(7), right: ScreenUtil().setHeight(7)),
-            height:  ScreenUtil().setHeight(20),
+            padding: EdgeInsets.only(left: ScreenUtil().setHeight(8), right: ScreenUtil().setHeight(9)),
+            height:  ScreenUtil().setHeight(22),
             margin: EdgeInsets.only(left: ScreenUtil().setHeight(10)),
             decoration: BoxDecoration(
               color: Color.fromRGBO(196, 236, 255, 1.0),
@@ -270,7 +271,7 @@ class _FansListState extends State<FansListPage> {
                 '${newList[index].typeSignCount[1].typeName}元打卡:${newList[index].typeSignCount[1].typeSignCount == null ? 0 : newList[index].typeSignCount[1].typeSignCount.toString()}次',
                 style: TextStyle(
                   color: Color.fromRGBO(234, 84, 143, 1.0),
-                  fontSize: ScreenUtil().setSp(11),
+                  fontSize: ScreenUtil().setSp(12),
                 ),
                 textAlign: TextAlign.center,
               ),

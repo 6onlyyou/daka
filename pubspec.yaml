@@ -46,6 +46,7 @@ flutter:
     - images/main_bg.png
     - images/gaiz.png
     - images/completebg.9.png
+    - images/clossbg.png
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

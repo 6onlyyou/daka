@@ -21,11 +21,11 @@ class Manage extends StatefulWidget {
 }
 
 class _ManageState extends State<Manage> {
-
   UserInfoModel usersList = UserInfoModel();
   GaiZhangModel gaiZhangModel = GaiZhangModel();
   var homme = "";
   var hommepassword = "";
+
   @override
   void initState() {
     // TODO: implement initState
@@ -45,6 +45,7 @@ class _ManageState extends State<Manage> {
 
     print('Jsonsss格式:::ssss');
   }
+
   Future _scan(BuildContext context) async {
     try {
       ScanResult barcode = await BarcodeScanner.scan();
@@ -58,75 +59,8 @@ class _ManageState extends State<Manage> {
       print("$e测试6");
     }
   }
-  myHisDialog(BuildContext context) {
-    return showDialog<Null>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return GestureDetector(
-          // 手势处理事件
-          onTap: () {
-            Navigator.of(context).pop(); //退出弹出框
-          },
-          child: Material(
-            type: MaterialType.transparency,
-            child: ListView(
-              // 添加静态数据
-              children: <Widget>[
-                // ListTile是一种样式相对固定的列表项，比如微信的“发现”页面
-                ListTile(
-                  // 添加图标
-                  leading: Icon(Icons.phone),
-                  // 添加文本
-                  subtitle: Text('Alarm'),
-                ),
-                ListTile(
-                  leading: Icon(Icons.phone),
-                  title: Text('Phone'),
-                ),
-                ListTile(
-                  leading: Icon(Icons.airplay),
-                  title: Text('Airplay'),
-                ),
-                ListTile(
-                  leading: Icon(Icons.airplay),
-                  title: Text('Airplay'),
-                ),
-                ListTile(
-                  leading: Icon(Icons.airplay),
-                  title: Text('Airplay'),
-                ),
-                ListTile(
-                  leading: Icon(Icons.airplay),
-                  title: Text('Airplay'),
-                ),
-                ListTile(
-                  leading: Icon(Icons.alarm),
-                  title: Text('Alarm'),
-                ),
-                ListTile(
-                  leading: Icon(Icons.alarm),
-                  title: Text('Alarm'),
-                ),
-                ListTile(
-                  leading: Icon(Icons.alarm),
-                  title: Text('Alarm'),
-                ),
-                ListTile(
-                  leading: Icon(Icons.alarm),
-                  title: Text('Alarm'),
-                ),
-                ListTile(
-                  leading: Icon(Icons.alarm),
-                  title: Text('Alarm'),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
+
+
   Future<void> _askedToLoad(String content) async {
     return showDialog<Null>(
         context: context,
@@ -135,7 +69,7 @@ class _ManageState extends State<Manage> {
           return new AlertDialog(
             title: new Text(
                 "恭喜" + usersList.data.wechatNickname + "获得" + content,
-                style: new TextStyle(fontSize:ScreenUtil().setSp(17))),
+                style: new TextStyle(fontSize: ScreenUtil().setSp(17))),
             actions: <Widget>[],
           );
         });
@@ -144,166 +78,172 @@ class _ManageState extends State<Manage> {
   Future myDialog(context) {
     return showDialog<Null>(
       context: context,
-      barrierDismissible: false,
+      barrierDismissible: true,
       builder: (BuildContext context) {
-        return GestureDetector(
+        return SimpleDialog(
           // 手势处理事件
-          onTap: () {
-            Navigator.of(context).pop(); //退出弹出框
-          },
-          child: Material(
-            type: MaterialType.transparency,
-            child: Center(
-                child: Container(
-              height: 298,
-              width:275,
+          backgroundColor: Colors.transparent,
+//          type: MaterialType.transparency,
+//          onTap: () {
+////            Navigator.of(context).pop(); //退出弹出框
+//          },
+          children: <Widget>[
+             Material(
+              type: MaterialType.transparency,
+              child: Center(
+                  child: Container(
+                height: 298,
+                width: 275,
 //            padding: EdgeInsets.only(left: 50),
-              decoration: new BoxDecoration(
-                image: new DecorationImage(
-                  image: AssetImage("images/completebg.9.png"),
-                  //这里是从assets静态文件中获取的，也可以new NetworkImage(）从网络上获取
+                decoration: new BoxDecoration(
+                  image: new DecorationImage(
+                    image: AssetImage("images/completebg.9.png"),
+                    //这里是从assets静态文件中获取的，也可以new NetworkImage(）从网络上获取
+                  ),
                 ),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                      padding: EdgeInsets.only(top: 50),
-                      child: Stack(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                        padding: EdgeInsets.only(top: 50),
+                        child: Stack(
+                          children: <Widget>[
+                            Align(
+                              child: Text(
+                                '用户详情',
+                                style: TextStyle(
+                                  color: Color.fromRGBO(51, 51, 51, 1.0),
+                                  fontSize: 16,
+                                ),
+                              ),
+                              alignment: Alignment.center,
+                            ),
+                          ],
+                        )),
+                    Container(
+                      padding: EdgeInsets.only(left: 45),
+                      child: Column(
                         children: <Widget>[
-                          Align(
+                          Container(
+                            margin: EdgeInsets.only(top: 15),
+                            width: double.infinity,
                             child: Text(
-                              '用户详情',
+                              '用户昵称：${usersList.data.wechatNickname == null ? "" : usersList.data.wechatNickname}',
+                              style: TextStyle(
+                                color: Color.fromRGBO(102, 102, 102, 1.0),
+                                fontSize: 15,
+                              ),
+                              textAlign: TextAlign.left,
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 10),
+                            width: double.infinity,
+                            child: Text(
+                              '${usersList.data.typeSignCount[0].typeName}元打卡次数：${usersList.data.typeSignCount[0].typeSignCount == null ? 0 : usersList.data.typeSignCount[0].typeSignCount}次',
+                              style: TextStyle(
+                                color: Color.fromRGBO(102, 102, 102, 1.0),
+                                fontSize: 15,
+                              ),
+                              textAlign: TextAlign.left,
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 10),
+                            width: double.infinity,
+                            child: Text(
+                              '${usersList.data.typeSignCount[1].typeName}元打卡次数：${usersList.data.typeSignCount[1].typeSignCount == null ? 0 : usersList.data.typeSignCount[1].typeSignCount}次',
+                              style: TextStyle(
+                                color: Color.fromRGBO(102, 102, 102, 1.0),
+                                fontSize: 15,
+                              ),
+                              textAlign: TextAlign.left,
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 10),
+                            width: double.infinity,
+                            child: Text(
+                              '请选择盖章类型?',
                               style: TextStyle(
                                 color: Color.fromRGBO(51, 51, 51, 1.0),
-                                fontSize: 16,
+                                fontSize: 15,
                               ),
+                              textAlign: TextAlign.left,
                             ),
-                            alignment: Alignment.center,
                           ),
                         ],
-                      )),
-                  Container(
-                    padding: EdgeInsets.only(left: 45),
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.only(top: 15),
-                          width: double.infinity,
-                          child: Text(
-                            '用户昵称：${usersList.data.wechatNickname == null ? "" : usersList.data.wechatNickname}',
-                            style: TextStyle(
-                              color: Color.fromRGBO(102, 102, 102, 1.0),
-                              fontSize: 15,
-                            ),
-                            textAlign: TextAlign.left,
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(top: 10),
-                          width: double.infinity,
-                          child: Text(
-                            '${usersList.data.typeSignCount[0].typeName}元打卡次数：${usersList.data.typeSignCount[0].typeSignCount == null ? 0 : usersList.data.typeSignCount[0].typeSignCount}次',
-                            style: TextStyle(
-                              color: Color.fromRGBO(102, 102, 102, 1.0),
-                              fontSize: 15,
-                            ),
-                            textAlign: TextAlign.left,
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(top: 10),
-                          width: double.infinity,
-                          child: Text(
-                            '${usersList.data.typeSignCount[1].typeName}元打卡次数：${usersList.data.typeSignCount[1].typeSignCount == null ? 0 : usersList.data.typeSignCount[1].typeSignCount}次',
-                            style: TextStyle(
-                              color: Color.fromRGBO(102, 102, 102, 1.0),
-                              fontSize: 15,
-                            ),
-                            textAlign: TextAlign.left,
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(top: 10),
-                          width: double.infinity,
-                          child: Text(
-                            '请选择盖章类型?',
-                            style: TextStyle(
-                              color: Color.fromRGBO(51, 51, 51, 1.0),
-                              fontSize: 15,
-                            ),
-                            textAlign: TextAlign.left,
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 10),
-                    width: double.infinity,
-                    child: Row(
-                      children: <Widget>[
-                        Container(
-                            margin: EdgeInsets.only(left: 30),
-                            child: RaisedButton(
-                              child: new Text(
-                                  "${usersList.data.typeSignCount[0].typeName}元打卡"),
-                              color: Colors.white,
+                    Container(
 
-                              textColor: Color.fromRGBO(29, 168, 239, 1.0),
-                              onPressed: () {
-                                Navigator.of(context).pop(); //退出弹出框
-                                getGsiX(usersList.data.id,
-                                    usersList.data.typeSignCount[0].typeId);
-                              },
-                              disabledColor: Colors.grey,
-                              disabledTextColor: Colors.white,
-                              disabledElevation: 4,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20.0),
-                                  side: BorderSide(
-                                      color: Color.fromRGBO(
-                                          196, 236, 255, 1.0))), //圆角大小
-                            )),
-                        Container(
-                            margin: EdgeInsets.only(left: 20),
-                            child: RaisedButton(
-                              child: new Text(
-                                  "${usersList.data.typeSignCount[1].typeName}元打卡"),
-                              color: Colors.white,
+                      margin: EdgeInsets.only(top: 10),
+                      width: double.infinity,
+                      child: Row(
+//                      mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Container(
+                              margin: EdgeInsets.only(left: 30),
+                              child: RaisedButton(
 
-                              textColor: Color.fromRGBO(29, 168, 239, 1.0),
-                              onPressed: () {
-                                Navigator.of(context).pop(); //退出弹出框
-                                getGsiX(usersList.data.id,
-                                    usersList.data.typeSignCount[1].typeId);
-                              },
-                              disabledColor: Colors.grey,
-                              disabledTextColor: Colors.white,
-                              disabledElevation: 4,
+                                child: new Text(
+                                    "${usersList.data.typeSignCount[0].typeName}元打卡"),
+                                color: Colors.white,
+
+                                textColor: Color.fromRGBO(29, 168, 239, 1.0),
+                                onPressed: () {
+                                  Navigator.of(context).pop(); //退出弹出框
+                                  getGsiX(usersList.data.id,
+                                      usersList.data.typeSignCount[0].typeId);
+                                },
+                                disabledColor: Colors.grey,
+                                disabledTextColor: Colors.white,
+                                disabledElevation: 4,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    side: BorderSide(
+                                        color: Color.fromRGBO(
+                                            196, 236, 255, 1.0))), //圆角大小
+                              )),
+                          Offstage(
+                            offstage: true, //这里控制
+                            child: Container(
+                                margin: EdgeInsets.only(left: 20),
+                                child: RaisedButton(
+                                  child: new Text(
+                                      "${usersList.data.typeSignCount[1].typeName}元打卡"),
+                                  color: Colors.white,
+
+                                  textColor: Color.fromRGBO(29, 168, 239, 1.0),
+                                  onPressed: () {
+                                    Navigator.of(context).pop(); //退出弹出框
+                                    getGsiX(usersList.data.id,
+                                        usersList.data.typeSignCount[1].typeId);
+                                  },
+                                  disabledColor: Colors.grey,
+                                  disabledTextColor: Colors.white,
+                                  disabledElevation: 4,
 
 //          onPressed: null,// 设置为null即为不可点击（disabled）状态
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20.0),
-                                  side: BorderSide(
-                                      color: Color.fromRGBO(
-                                          196, 236, 255, 1.0))), //圆角大小
-                            )),
-                      ],
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                      side: BorderSide(
+                                          color: Color.fromRGBO(
+                                              196, 236, 255, 1.0))), //圆角大小
+                                )),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            )),
-          ),
+                  ],
+                ),
+              )),
+            ),
+          ],
         );
       },
     );
   }
-
-
-
-
 
   void getGsiX(int userAccount, int typeId) async {
     // 请求url
@@ -347,7 +287,7 @@ class _ManageState extends State<Manage> {
     // 请求参数：店铺Id
 //    var formData = {'merchantId': '9'};
     // 调用请求方法传入url及表单数据
-    await requestHead(url,homme,hommepassword).then((value) {
+    await requestHead(url, homme, hommepassword).then((value) {
       // 返回数据进行Json解码
       var data = json.decode(value.toString());
       // 打印数据
