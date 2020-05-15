@@ -22,13 +22,12 @@ Future request(url, {formData}) async {
     return print('error:::${e}');
   }
 }
-Future requestHead(url) async {
+Future requestHead(url,home,homepassword) async {
   try {
     Response response;
     Dio dio = Dio();
     dio.options.contentType = ContentType.parse('application/x-www-form-urlencoded').toString();
-//    Options options = Options(headers: {HttpHeaders.acceptHeader:"merchantAccount: 9",HttpHeaders.acceptHeader:"merchantPassword: fushuaige..."});
-    dio.options.headers = {'merchantAccount':'9','merchantPassword':'fushuaige...'};
+    dio.options.headers = {'merchantAccount':home,'merchantPassword':homepassword};
 //    dio.options.headers = {};
     // 发起POST请求，传入url及表单参数
     response = await dio.get(url);

@@ -347,7 +347,7 @@ class _ManageState extends State<Manage> {
     // 请求参数：店铺Id
 //    var formData = {'merchantId': '9'};
     // 调用请求方法传入url及表单数据
-    await requestHead(url).then((value) {
+    await requestHead(url,homme,hommepassword).then((value) {
       // 返回数据进行Json解码
       var data = json.decode(value.toString());
       // 打印数据
