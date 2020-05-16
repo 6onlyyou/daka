@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:daka/model/gai_zhang_model.dart';
-import 'package:daka/model/user_info_model.dart';
 import 'package:daka/model/user_infos_model.dart';
 import 'package:daka/service/http_service.dart';
 import 'package:flutter/material.dart';
