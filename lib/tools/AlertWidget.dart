@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:daka/model/gai_zhang_model.dart';
 import 'package:daka/model/user_info_model.dart';
+import 'package:daka/model/user_infos_model.dart';
 import 'package:daka/service/http_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,7 +22,7 @@ class Manage extends StatefulWidget {
 }
 
 class _ManageState extends State<Manage> {
-  UserInfoModel usersList = UserInfoModel();
+  UserInfosModel usersList = UserInfosModel();
   GaiZhangModel gaiZhangModel = GaiZhangModel();
   var homme = "";
   var hommepassword = "";
@@ -206,7 +207,7 @@ class _ManageState extends State<Manage> {
                                             196, 236, 255, 1.0))), //圆角大小
                               )),
                           Offstage(
-                            offstage: true, //这里控制
+                            offstage: usersList.data.typeSignCount[1].havePrizeFlag?false:true, //这里控制
                             child: Container(
                                 margin: EdgeInsets.only(left: 20),
                                 child: RaisedButton(
@@ -296,7 +297,7 @@ class _ManageState extends State<Manage> {
       // 设置状态刷新数据
       setState(() {
         // 将返回的Json数据转换成Model
-        var fansListModel = new UserInfoModel();
+        var fansListModel = new UserInfosModel();
         usersList = fansListModel.fromJson(data);
         myDialog(context);
       });

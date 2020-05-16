@@ -1,12 +1,12 @@
 import 'package:daka/generated/json/base/json_convert_content.dart';
 
-class UserInfoModel with JsonConvert<UserInfoModel> {
+class UserInfosModel with JsonConvert<UserInfosModel> {
 	int state;
 	dynamic msg;
-	UserInfoData data;
+	UserInfosData data;
 }
 
-class UserInfoData with JsonConvert<UserInfoData> {
+class UserInfosData with JsonConvert<UserInfosData> {
 	int id;
 	String wechatAccount;
 	String wechatNickname;
@@ -16,13 +16,14 @@ class UserInfoData with JsonConvert<UserInfoData> {
 	dynamic level;
 	String ruleName;
 	dynamic types;
-	List<UserInfoDataTypeSignCount> typeSignCount;
+	List<UserInfosDataTypeSignCount> typeSignCount;
 }
 
-class UserInfoDataTypeSignCount with JsonConvert<UserInfoDataTypeSignCount> {
+class UserInfosDataTypeSignCount with JsonConvert<UserInfosDataTypeSignCount> {
 	int typeId;
 	String typeName;
 	dynamic merchantId;
 	dynamic typeSignCount;
 	dynamic prizeList;
+	bool havePrizeFlag;
 }
